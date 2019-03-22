@@ -1,0 +1,74 @@
+package oshin.tasnuva.mysql;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+public class JsonAdapter extends RecyclerView.Adapter<JsonDataViewHolder> {
+
+
+    ArrayList<JsonDataList> list;
+    Context context;
+
+    MyClick myClick;
+
+
+    public JsonAdapter() {
+    }
+
+    public JsonAdapter(ArrayList<JsonDataList> list, Context context,MyClick myClick) {
+        this.list = list;
+        this.context = context;
+        this.myClick = myClick;
+    }
+
+    @NonNull
+    @Override
+    public JsonDataViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+
+
+        View view  = LayoutInflater.from(context).inflate(R.layout.per_row,viewGroup,false);
+
+        final JsonDataViewHolder jsonDataViewHolder = new JsonDataViewHolder(view);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                myClick.onClickMe(view,jsonDataViewHolder.getPosition());
+
+            }
+        });
+
+        return jsonDataViewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final JsonDataViewHolder jsonDataViewHolder, int i) {
+        final JsonDataList currentData = list.get(i);
+
+
+        jsonDataViewHolder.name.setText(currentData.getUser_name());
+        jsonDataViewHolder.description.setText(currentData.getUser_description());
+
+        Picasso.get().load(currentData.getUser_img()).into(jsonDataViewHolder.imageView);
+
+
+
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+}
